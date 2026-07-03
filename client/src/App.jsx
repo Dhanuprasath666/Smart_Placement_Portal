@@ -10,12 +10,15 @@ import Placements from './pages/Placement';
 import AdminRegister from './pages/AdminRegister';
 import CompanyVisits from './pages/CompanyVisits';
 import AdminCompanyVisits from './pages/AdminCompanyVisits';
+import AdminCompanyApplications from './pages/AdminCompanyApplications';
 import DashboardOverview from './pages/DashboardOverview';
 import Profile from './pages/Profile';
 import PlacementDetail from './pages/PlacementDetail';
 import CompanyVisitDetail from './pages/CompanyVisitDetail';
 import SuperAdminUsers from './pages/SuperAdminUser';
 import SuperAdminRegister from './pages/SuperAdminRegister';
+import Notifications from './pages/Notifications';
+import CompanyVisitApply from './pages/CompanyVisitApply';
 
 function App() {
   return (
@@ -56,6 +59,14 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/admin/company-applications" 
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminCompanyApplications />
+              </ProtectedRoute>
+            } 
+          />
 
           {/* Student Routes */}
           <Route 
@@ -90,12 +101,28 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/dashboard/notifications" 
+            element={
+              <ProtectedRoute requiredRole="student">
+                <Notifications />
+              </ProtectedRoute>
+            } 
+          />
 
           {/* Public Pages */}
           <Route path="/placements" element={<Placements />} />
           <Route path="/placement/:id" element={<PlacementDetail />} />
           <Route path="/company-visits" element={<CompanyVisits />} />
           <Route path="/company-visit/:id" element={<CompanyVisitDetail />} />
+          <Route 
+            path="/company-visit/:id/apply" 
+            element={
+              <ProtectedRoute requiredRole="student">
+                <CompanyVisitApply />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </Router>
     </AuthProvider>

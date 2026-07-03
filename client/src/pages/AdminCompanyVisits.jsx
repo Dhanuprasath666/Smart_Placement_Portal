@@ -25,6 +25,8 @@ function AdminCompanyVisits() {
     rolesOffered: "",
     minPackage: "",
     maxPackage: "",
+    minCgpa: "",
+    eligibleBranches: "",
     eligibilityCriteria: "",
     jobDescription: "",
     batch: "",
@@ -70,6 +72,11 @@ function AdminCompanyVisits() {
     if (parseFloat(formData.minPackage) > parseFloat(formData.maxPackage)) {
       errors.maxPackage = "Max package must be greater than min package";
     }
+    if (formData.minCgpa === "") errors.minCgpa = "Minimum CGPA is required";
+    if (formData.minCgpa !== "" && (parseFloat(formData.minCgpa) < 0 || parseFloat(formData.minCgpa) > 10)) {
+      errors.minCgpa = "Minimum CGPA must be between 0 and 10";
+    }
+    if (!formData.eligibleBranches.trim()) errors.eligibleBranches = "Eligible branches are required";
     if (!formData.eligibilityCriteria.trim()) errors.eligibilityCriteria = "Eligibility criteria is required";
     if (!formData.jobDescription.trim()) errors.jobDescription = "Job description is required";
     if (!formData.batch.trim()) errors.batch = "Batch is required";
@@ -90,7 +97,12 @@ function AdminCompanyVisits() {
     try {
       const rolesArray = formData.rolesOffered
         .split(",")
-        .map((role) => role.trim());
+        .map((role) => role.trim())
+        .filter(Boolean);
+      const eligibleBranchesArray = formData.eligibleBranches
+        .split(",")
+        .map((branch) => branch.trim())
+        .filter(Boolean);
 
       const visitData = {
         companyName: formData.companyName,
@@ -100,6 +112,8 @@ function AdminCompanyVisits() {
           min: parseFloat(formData.minPackage),
           max: parseFloat(formData.maxPackage),
         },
+        minCgpa: parseFloat(formData.minCgpa),
+        eligibleBranches: eligibleBranchesArray,
         eligibilityCriteria: formData.eligibilityCriteria,
         jobDescription: formData.jobDescription,
         batch: formData.batch,
@@ -134,6 +148,8 @@ function AdminCompanyVisits() {
       rolesOffered: "",
       minPackage: "",
       maxPackage: "",
+      minCgpa: "",
+      eligibleBranches: "",
       eligibilityCriteria: "",
       jobDescription: "",
       batch: "",
@@ -149,6 +165,8 @@ function AdminCompanyVisits() {
       rolesOffered: visit.rolesOffered.join(", "),
       minPackage: visit.packageRange.min,
       maxPackage: visit.packageRange.max,
+      minCgpa: visit.minCgpa ?? "",
+      eligibleBranches: Array.isArray(visit.eligibleBranches) ? visit.eligibleBranches.join(", ") : "",
       eligibilityCriteria: visit.eligibilityCriteria,
       jobDescription: visit.jobDescription,
       batch: visit.batch,
@@ -228,10 +246,15 @@ function AdminCompanyVisits() {
               </div>
             </div>
             
-              <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <Link to={user?.role === 'superadmin' ? '/superadmin/admins' : '/admin'}>
                 <button className="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl shadow-lg transition">
                   ← Dashboard
+                </button>
+              </Link>
+              <Link to="/admin/company-applications">
+                <button className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg transition">
+                  📄 Applications
                 </button>
               </Link>
               <button 
@@ -406,6 +429,41 @@ function AdminCompanyVisits() {
                 </div>
               </div>
 
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Minimum CGPA *
+                  </label>
+                  <input
+                    type="number"
+                    name="minCgpa"
+                    value={formData.minCgpa}
+                    onChange={handleChange}
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    placeholder="e.g., 7.5"
+                    className={`w-full px-4 py-3 bg-slate-700 border-2 ${formErrors.minCgpa ? 'border-red-500' : 'border-slate-600'} text-white placeholder-gray-500 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition`}
+                  />
+                  {formErrors.minCgpa && <p className="text-red-400 text-sm mt-1">{formErrors.minCgpa}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Eligible Branches (comma-separated) *
+                  </label>
+                  <input
+                    type="text"
+                    name="eligibleBranches"
+                    value={formData.eligibleBranches}
+                    onChange={handleChange}
+                    placeholder="e.g., CSE, IT, ECE"
+                    className={`w-full px-4 py-3 bg-slate-700 border-2 ${formErrors.eligibleBranches ? 'border-red-500' : 'border-slate-600'} text-white placeholder-gray-500 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none transition`}
+                  />
+                  {formErrors.eligibleBranches && <p className="text-red-400 text-sm mt-1">{formErrors.eligibleBranches}</p>}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Eligibility Criteria *
@@ -543,6 +601,12 @@ function AdminCompanyVisits() {
                           <span className="text-green-400 font-bold">
                             ₹{visit.packageRange.min} - ₹{visit.packageRange.max} LPA
                           </span>
+                        </p>
+                        <p className="text-gray-300">
+                          <strong className="text-gray-400">Minimum CGPA:</strong> {visit.minCgpa ?? "Not set"}
+                        </p>
+                        <p className="text-gray-300">
+                          <strong className="text-gray-400">Eligible Branches:</strong> {Array.isArray(visit.eligibleBranches) ? visit.eligibleBranches.join(", ") : "Not set"}
                         </p>
                       </div>
 

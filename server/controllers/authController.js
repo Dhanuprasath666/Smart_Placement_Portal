@@ -1,11 +1,31 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('../config/cloudinary');
+
+const mapUserResponse = (user) => ({
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  rollNumber: user.rollNumber,
+  batch: user.batch,
+  cgpa: user.cgpa,
+  branch: user.branch,
+  profilePhoto: user.profilePhoto || null,
+  linkedin: user.linkedin || '',
+  github: user.github || '',
+  portfolio: user.portfolio || '',
+  skills: user.skills || '',
+  bio: user.bio || '',
+  notifications: user.notifications || [],
+  role: user.role,
+  isBlocked: user.isBlocked
+});
 
 // Register new user
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, rollNumber, batch } = req.body;
+    const { name, email, password, rollNumber, batch, cgpa, branch } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ 
@@ -27,7 +47,9 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       rollNumber,
-      batch
+      batch,
+      cgpa,
+      branch
     });
 
     await user.save();
@@ -77,14 +99,7 @@ exports.login = async (req, res) => {
     res.json({
       message: 'Login successful',
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        rollNumber: user.rollNumber,
-        batch: user.batch,
-        role: user.role
-      }
+      user: mapUserResponse(user)
     });
 
   } catch (error) {
@@ -95,7 +110,7 @@ exports.login = async (req, res) => {
 // Register new admin with secret code
 exports.registerAdmin = async (req, res) => {
   try {
-    const { name, email, password, rollNumber, batch, adminSecret } = req.body;
+    const { name, email, password, rollNumber, batch, cgpa, branch, adminSecret } = req.body;
 
     // Check admin secret code
     const ADMIN_SECRET = process.env.ADMIN_SECRET || 'your-super-secret-admin-code-2025';
@@ -127,6 +142,8 @@ exports.registerAdmin = async (req, res) => {
       password: hashedPassword,
       rollNumber,
       batch,
+      cgpa,
+      branch,
       role: 'admin',  // Set role as admin
       verified: true  // Auto-verify admins
     });
@@ -146,7 +163,7 @@ exports.registerAdmin = async (req, res) => {
 // Register Super Admin with super secret code
 exports.registerSuperAdmin = async (req, res) => {
   try {
-    const { name, email, password, rollNumber, batch, superSecretCode } = req.body;
+    const { name, email, password, rollNumber, batch, cgpa, branch, superSecretCode } = req.body;
 
     // Check super secret code
     if (superSecretCode !== process.env.SUPERADMIN_SECRET) {
@@ -172,6 +189,8 @@ exports.registerSuperAdmin = async (req, res) => {
       password: hashedPassword,
       rollNumber,
       batch,
+      cgpa,
+      branch,
       role: 'superadmin',
       verified: true
     });
@@ -180,12 +199,7 @@ exports.registerSuperAdmin = async (req, res) => {
 
     res.status(201).json({ 
       message: 'Super Admin registered successfully',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
+      user: mapUserResponse(user)
     });
 
   } catch (error) {
@@ -204,18 +218,83 @@ exports.getCurrentUser = async (req, res) => {
     }
 
     res.json({ 
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        rollNumber: user.rollNumber,
-        batch: user.batch,
-        role: user.role,
-        isBlocked: user.isBlocked
-      }
+      user: mapUserResponse(user)
     });
   } catch (error) {
     console.error('Get current user error:', error);
     res.status(500).json({ message: 'Error fetching user details' });
+  }
+};
+
+// Update current logged in user profile
+exports.updateCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const {
+      name,
+      linkedin,
+      github,
+      portfolio,
+      skills,
+      bio,
+    } = req.body;
+
+    if (typeof name === 'string' && name.trim()) {
+      user.name = name.trim();
+    }
+
+    if (typeof linkedin === 'string') {
+      user.linkedin = linkedin.trim();
+    }
+
+    if (typeof github === 'string') {
+      user.github = github.trim();
+    }
+
+    if (typeof portfolio === 'string') {
+      user.portfolio = portfolio.trim();
+    }
+
+    if (typeof skills === 'string') {
+      user.skills = skills.trim();
+    }
+
+    if (typeof bio === 'string') {
+      user.bio = bio.trim();
+    }
+
+    if (req.file) {
+      if (!req.file.mimetype || !req.file.mimetype.startsWith('image/')) {
+        return res.status(400).json({ message: 'Profile photo must be an image' });
+      }
+
+      const uploadedPhoto = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: 'placement-portal/profile-photos', resource_type: 'image' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.file.buffer);
+      });
+
+      user.profilePhoto = uploadedPhoto.secure_url;
+    }
+
+    await user.save();
+
+    res.json({
+      message: 'Profile updated successfully',
+      user: mapUserResponse(user),
+    });
+  } catch (error) {
+    console.error('Update current user error:', error);
+    res.status(500).json({ message: 'Error updating profile' });
   }
 };

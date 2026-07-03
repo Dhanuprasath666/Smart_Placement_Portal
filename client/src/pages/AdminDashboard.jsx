@@ -116,6 +116,11 @@ function NewAdminDashboard() {
                   🏢 Manage Companies
                 </button>
               </Link>
+              <Link to="/admin/company-applications">
+                <button className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg transition">
+                  📄 Company Applications
+                </button>
+              </Link>
               <button 
                 onClick={handleLogout}
                 className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl shadow-lg transition"

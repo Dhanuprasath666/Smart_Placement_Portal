@@ -45,23 +45,19 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-linear-to-br from-blue-600 via-purple-600 to-pink-500 opacity-90"></div>
-      
-      <div className="relative w-full max-w-md">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10">
-          {/* Logo/Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Welcome Back!
-            </h2>
-            <p className="text-gray-600 mt-2">Login to access your dashboard</p>
+    <div className="app-shell flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-300 via-blue-100 to-indigo-200 px-4 py-10">
+      <div className="w-full max-w-md">
+        <div className="rounded-3xl border border-blue-200 bg-gradient-to-br from-white via-blue-50 to-sky-100 p-8 shadow-xl backdrop-blur sm:p-10">
+          <div className="mb-8 text-center">
+            <p className="muted-label uppercase tracking-[0.2em]">Placement Portal</p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900">Welcome back</h2>
+            <p className="mt-2 text-slate-600">Login to continue to your dashboard</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
-              <p className="text-red-700 font-medium">{error}</p>
+            <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4">
+              <p className="font-medium text-rose-700">{error}</p>
             </div>
           )}
 
@@ -78,7 +74,7 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="your.email@example.com"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                className="field"
               />
             </div>
 
@@ -93,17 +89,17 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                className="field"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="btn-primary w-full"
             >
               {loading ? (
-                <span className="flex items-center justify-center">
+                <span className="flex items-center justify-center gap-3">
                   <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -118,9 +114,9 @@ function Login() {
 
           {/* Register Link */}
           <div className="mt-8 text-center">
-            <p className="text-gray-600">
+            <p className="text-slate-600">
               Don't have an account?{' '}
-              <Link to="/register" className="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
+              <Link to="/register" className="font-semibold text-blue-700 hover:underline">
                 Register here
               </Link>
             </p>
@@ -128,7 +124,7 @@ function Login() {
 
           {/* Back to Home */}
           <div className="mt-4 text-center">
-            <Link to="/" className="text-gray-500 text-sm hover:text-gray-700">
+            <Link to="/" className="text-sm text-slate-500 hover:text-slate-700">
               ← Back to Home
             </Link>
           </div>

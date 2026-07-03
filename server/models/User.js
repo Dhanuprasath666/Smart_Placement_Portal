@@ -29,6 +29,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    cgpa: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 10,
+    },
+    branch: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
       enum: ["student", "admin", "superadmin"],
@@ -65,7 +75,34 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       default: '',
-    }
+    },
+    notifications: [{
+      companyVisit: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CompanyVisit",
+        required: true,
+      },
+      companyName: {
+        type: String,
+        required: true,
+      },
+      message: {
+        type: String,
+        required: true,
+      },
+      isRead: {
+        type: Boolean,
+        default: false,
+      },
+      isDismissed: {
+        type: Boolean,
+        default: false,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    }]
   },
   {
     timestamps: true,

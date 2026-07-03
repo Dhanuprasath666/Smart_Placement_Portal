@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { getMyPlacements, submitPlacement } from '../utils/api';
+import { getEligibleNotifications, getMyPlacements, submitPlacement } from '../utils/api';
 
 function StudentDashboard() {
   const [myPlacements, setMyPlacements] = useState([]);
+  const [eligibleVisits, setEligibleVisits] = useState([]);
+  const [showEligibilityBanner, setShowEligibilityBanner] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +27,10 @@ function StudentDashboard() {
 
   useEffect(() => {
     fetchMyPlacements();
+    fetchEligibleNotifications();
+  }, []);
+
+  useEffect(() => {
     if (user) {
       setFormData(prev => ({
         ...prev,
@@ -40,6 +46,16 @@ function StudentDashboard() {
       setMyPlacements(data.placements);
     } catch (error) {
       console.error('Error fetching placements:', error);
+    }
+  };
+
+  const fetchEligibleNotifications = async () => {
+    try {
+      const data = await getEligibleNotifications();
+      setEligibleVisits(data.eligibleVisits || []);
+      setShowEligibilityBanner(true);
+    } catch (error) {
+      console.error('Error fetching eligible notifications:', error);
     }
   };
 
@@ -146,6 +162,24 @@ function StudentDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {showEligibilityBanner && eligibleVisits.length > 0 && (
+          <div className="mb-6 flex items-start justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-4 shadow-sm">
+            <div>
+              <p className="text-sm font-semibold text-emerald-800">Eligibility Notification</p>
+              <p className="mt-1 text-emerald-700">
+                You're eligible for: {eligibleVisits.map((visit) => visit.companyName).join(', ')}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowEligibilityBanner(false)}
+              className="text-sm font-semibold text-emerald-700 transition hover:text-emerald-900"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {/* Submit Button */}
         <button 
           onClick={() => setShowForm(!showForm)}

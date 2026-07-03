@@ -10,6 +10,7 @@ function Sidebar() {
 
   const menuItems = [
     { path: '/dashboard', icon: '🏠', label: 'Overview' },
+    { path: '/dashboard/notifications', icon: '🔔', label: 'Notifications' },
     { path: '/dashboard/submit', icon: '📝', label: 'Submit Placement' },
     { path: '/dashboard/my-placements', icon: '📊', label: 'My Placements' },
     { path: '/dashboard/profile', icon: '👤', label: 'My Profile' },
@@ -18,21 +19,19 @@ function Sidebar() {
   ];
 
   return (
-    <div className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 min-h-screen p-6 flex flex-col shadow-2xl">
-      {/* Logo */}
-      <div className="mb-10">
+    <aside className="flex min-h-screen w-72 flex-col border-r border-slate-200 bg-slate-950 px-5 py-6 text-white shadow-[0_24px_80px_rgba(15,23,42,0.25)]">
+      <div className="mb-8">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 text-slate-950 shadow-lg">
             <span className="text-white font-bold text-xl">P</span>
           </div>
           <div>
-            <h1 className="text-white font-bold text-lg">PlacementHub</h1>
-            <p className="text-gray-400 text-xs">Student Portal</p>
+            <h1 className="text-lg font-semibold tracking-tight text-white">PlacementHub</h1>
+            <p className="text-xs text-slate-400">Student Portal</p>
           </div>
         </Link>
       </div>
 
-      {/* Menu Items */}
       <nav className="flex-1 space-y-2">
         {menuItems.map((item) => (
           <Link
@@ -40,25 +39,24 @@ function Sidebar() {
             to={item.path}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
               isActive(item.path)
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
-                : 'text-gray-300 hover:bg-slate-700 hover:text-white'
+                ? 'bg-white/10 text-white ring-1 ring-white/10'
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <span className="text-2xl">{item.icon}</span>
+            <span className="text-xl">{item.icon}</span>
             <span className="font-medium">{item.label}</span>
           </Link>
         ))}
       </nav>
 
-      {/* Logout */}
       <button
         onClick={logout}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-red-600 hover:text-white transition-all duration-200 mt-4"
+        className="mt-4 flex items-center gap-3 rounded-xl px-4 py-3 text-slate-300 transition-all duration-200 hover:bg-rose-500/15 hover:text-white"
       >
-        <span className="text-2xl">🚪</span>
+        <span className="text-xl">🚪</span>
         <span className="font-medium">Logout</span>
       </button>
-    </div>
+    </aside>
   );
 }
 

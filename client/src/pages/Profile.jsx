@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
-import { getMyPlacements } from "../utils/api";
+import { getMyPlacements, updateCurrentUser } from "../utils/api";
 
 function Profile() {
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -17,8 +17,12 @@ function Profile() {
     skills: "",
     bio: "",
   });
+  const [profilePhotoFile, setProfilePhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState("");
+  const [saving, setSaving] = useState(false);
   const [totalPlacements, setTotalPlacements] = useState(0);
   const [approvedPlacements, setApprovedPlacements] = useState(0);
+
   useEffect(() => {
     fetchPlacementStats();
   }, []);
@@ -45,12 +49,13 @@ function Profile() {
         email: user.email || "",
         rollNumber: user.rollNumber || "",
         batch: user.batch || "",
-        linkedin: "",
-        github: "",
-        portfolio: "",
-        skills: "",
-        bio: "",
+        linkedin: user.linkedin || "",
+        github: user.github || "",
+        portfolio: user.portfolio || "",
+        skills: user.skills || "",
+        bio: user.bio || "",
       });
+      setPhotoPreview(user.profilePhoto || "");
     }
   }, [user]);
 
@@ -61,11 +66,40 @@ function Profile() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setProfilePhotoFile(file);
+    setPhotoPreview(file ? URL.createObjectURL(file) : (user?.profilePhoto || ""));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add API call to update profile
-    alert("Profile updated! (API integration pending)");
-    setIsEditing(false);
+    setSaving(true);
+
+    try {
+      const payload = new FormData();
+      payload.append("name", formData.name);
+      payload.append("linkedin", formData.linkedin);
+      payload.append("github", formData.github);
+      payload.append("portfolio", formData.portfolio);
+      payload.append("skills", formData.skills);
+      payload.append("bio", formData.bio);
+
+      if (profilePhotoFile) {
+        payload.append("profilePhoto", profilePhotoFile);
+      }
+
+      const data = await updateCurrentUser(payload);
+      updateUser(data.user);
+      setIsEditing(false);
+      setProfilePhotoFile(null);
+      setPhotoPreview(data.user.profilePhoto || "");
+      alert("Profile updated successfully");
+    } catch (err) {
+      alert(err.response?.data?.message || "Error updating profile");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -100,9 +134,27 @@ function Profile() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-8 text-center sticky top-8">
               {/* Avatar */}
-              <div className="w-32 h-32 mx-auto mb-6 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-xl">
-                {user?.name?.charAt(0).toUpperCase()}
+              <div className="w-32 h-32 mx-auto mb-6 overflow-hidden bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                {photoPreview ? (
+                  <img src={photoPreview} alt={user?.name} className="h-full w-full object-cover" />
+                ) : (
+                  user?.name?.charAt(0).toUpperCase()
+                )}
               </div>
+
+              {isEditing && (
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Profile Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-white hover:file:bg-blue-700"
+                  />
+                </div>
+              )}
 
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
                 {user?.name}
@@ -333,9 +385,10 @@ function Profile() {
                   </button>
                   <button
                     type="submit"
-                    className="px-8 py-3 bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg transition"
+                    disabled={saving}
+                    className="px-8 py-3 bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg transition disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    💾 Save Changes
+                    {saving ? "Saving..." : "💾 Save Changes"}
                   </button>
                 </div>
               )}

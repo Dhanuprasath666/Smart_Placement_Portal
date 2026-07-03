@@ -11,6 +11,7 @@ function SuperAdminSidebar() {
   const menuItems = [
     { path: '/superadmin/admins', icon: '👥', label: 'All Users & Admins' },
     { path: '/admin/company-visits', icon: '🏢', label: 'Company Visits' },
+    { path: '/admin/company-applications', icon: '📄', label: 'Company Applications' },
   ];
 
   const handleLogout = () => {
@@ -18,29 +19,29 @@ function SuperAdminSidebar() {
   };
 
   return (
-    <div className="w-64 bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen p-6 flex flex-col shadow-2xl border-r border-purple-700">
+    <aside className="flex min-h-screen w-72 flex-col border-r border-slate-800 bg-slate-950 px-5 py-6 text-white shadow-[0_24px_80px_rgba(15,23,42,0.35)]">
       {/* Logo */}
-      <div className="mb-10">
+      <div className="mb-8">
         <Link to="/superadmin" className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-xl">👑</span>
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 shadow-lg">
+            <span className="font-bold text-xl">👑</span>
           </div>
           <div>
-            <h1 className="text-white font-bold text-lg">Super Admin</h1>
-            <p className="text-purple-300 text-xs">Master Control</p>
+            <h1 className="text-lg font-semibold tracking-tight text-white">Super Admin</h1>
+            <p className="text-xs text-slate-400">Master Control</p>
           </div>
         </Link>
       </div>
 
       {/* Super Admin Info */}
-      <div className="mb-8 p-4 bg-purple-800 bg-opacity-50 rounded-xl border border-purple-600">
+      <div className="mb-8 rounded-2xl border border-slate-800 bg-white/5 p-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 font-bold text-slate-950">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-semibold text-sm truncate">{user?.name}</p>
-            <p className="text-purple-300 text-xs flex items-center gap-1">
+            <p className="flex items-center gap-1 text-xs text-slate-400">
               <span>👑</span> Super Admin
             </p>
           </div>
@@ -58,20 +59,20 @@ function SuperAdminSidebar() {
             to={item.path}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
               isActive(item.path)
-                ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-lg scale-105'
-                : 'text-purple-200 hover:bg-purple-800 hover:bg-opacity-50 hover:text-white'
+                ? 'bg-white/10 text-white ring-1 ring-white/10'
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <span className="text-2xl">{item.icon}</span>
+            <span className="text-xl">{item.icon}</span>
             <span className="font-medium text-sm">{item.label}</span>
           </Link>
         ))}
       </nav>
 
       {/* Quick Info */}
-      <div className="mb-4 p-4 bg-gradient-to-br from-yellow-600 to-orange-600 rounded-xl">
-        <p className="text-yellow-100 text-xs font-semibold mb-2">🔒 Full Access</p>
-        <p className="text-white text-sm">
+      <div className="mb-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4">
+        <p className="mb-2 text-xs font-semibold text-amber-300">🔒 Full Access</p>
+        <p className="text-sm text-slate-200">
           You have complete control over all users and admins.
         </p>
       </div>
@@ -79,12 +80,12 @@ function SuperAdminSidebar() {
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl text-purple-200 hover:bg-red-600 hover:text-white transition-all duration-200 mt-4 w-full"
+        className="mt-4 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-slate-300 transition-all duration-200 hover:bg-rose-500/15 hover:text-white"
       >
-        <span className="text-2xl">🚪</span>
+        <span className="text-xl">🚪</span>
         <span className="font-medium">Logout</span>
       </button>
-    </div>
+    </aside>
   );
 }
 

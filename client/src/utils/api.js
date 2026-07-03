@@ -27,6 +27,15 @@ export const getCurrentUser = async () => {
   return response.data;
 };
 
+export const updateCurrentUser = async (formData) => {
+  const response = await axios.put(`${API_URL}/auth/me`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
 // Placement APIs
 export const submitPlacement = async (formData) => {
   const response = await axios.post(`${API_URL}/placements/submit`, formData, {
@@ -76,6 +85,26 @@ export const addCompanyVisit = async (visitData) => {
 
 export const getAllCompanyVisits = async () => {
   const response = await axios.get(`${API_URL}/company-visits`);
+  return response.data;
+};
+
+export const getEligibleNotifications = async () => {
+  const response = await axios.get(`${API_URL}/company-visits/eligible-notifications`);
+  return response.data;
+};
+
+export const dismissNotification = async (notificationId) => {
+  const response = await axios.put(`${API_URL}/company-visits/eligible-notifications/${notificationId}/dismiss`);
+  return response.data;
+};
+
+export const applyForCompanyVisit = async (id) => {
+  const response = await axios.post(`${API_URL}/company-visits/${id}/apply-interest`);
+  return response.data;
+};
+
+export const getCompanyApplications = async () => {
+  const response = await axios.get(`${API_URL}/company-visits/applications`);
   return response.data;
 };
 

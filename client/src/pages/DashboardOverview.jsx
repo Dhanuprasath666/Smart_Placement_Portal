@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { getMyPlacements, getAllPlacements, getAllCompanyVisits } from '../utils/api';
+import { dismissNotification, getEligibleNotifications, getMyPlacements, getAllPlacements, getAllCompanyVisits } from '../utils/api';
 import Sidebar from '../components/Sidebar';
 
 function DashboardOverview() {
@@ -9,6 +9,8 @@ function DashboardOverview() {
   const [myPlacements, setMyPlacements] = useState([]);
   const [allPlacements, setAllPlacements] = useState([]);
   const [companyVisits, setCompanyVisits] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,6 +28,8 @@ function DashboardOverview() {
       setMyPlacements(myData.placements);
       setAllPlacements(allData.placements);
       setCompanyVisits(companiesData.companyVisits);
+      const notificationsData = await getEligibleNotifications();
+      setNotifications(notificationsData.notifications || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -91,6 +95,52 @@ function DashboardOverview() {
       <Sidebar />
       
       <div className="flex-1 p-8 overflow-auto">
+        {showNotifications && notifications.some((notification) => !notification.isDismissed && !notification.isRead) && (
+          <div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-bold text-emerald-900">Eligibility Notifications</h2>
+                <p className="mt-2 text-emerald-700">
+                  You're eligible for: {notifications.filter((notification) => !notification.isDismissed && !notification.isRead).map((notification) => notification.companyName).join(', ')}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {notifications
+                    .filter((notification) => !notification.isDismissed && !notification.isRead)
+                    .map((notification) => (
+                      <Link
+                        key={notification._id}
+                        to={`/company-visit/${notification.companyVisit}/apply`}
+                        className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                      >
+                        Apply to {notification.companyName}
+                      </Link>
+                    ))}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  await Promise.all(
+                    notifications
+                      .filter((notification) => !notification.isDismissed && !notification.isRead)
+                      .map((notification) => dismissNotification(notification._id))
+                  );
+                  setNotifications((prevNotifications) =>
+                    prevNotifications.map((notification) => ({
+                      ...notification,
+                      isDismissed: true,
+                    }))
+                  );
+                  setShowNotifications(false);
+                }}
+                className="text-sm font-semibold text-emerald-700 hover:text-emerald-900"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">

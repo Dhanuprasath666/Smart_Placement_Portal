@@ -9,6 +9,14 @@ router.get('/', companyVisitController.getAllCompanyVisits);
 // POST /api/company-visits - Add new company visit (admin only)
 router.post('/', verifyToken, isAdmin, companyVisitController.addCompanyVisit);
 
+// GET /api/company-visits/eligible-notifications - Get eligible company visits for logged-in student
+router.get('/eligible-notifications', verifyToken, companyVisitController.getEligibleNotifications);
+router.put('/eligible-notifications/:notificationId/dismiss', verifyToken, companyVisitController.dismissNotification);
+router.post('/:id/apply-interest', verifyToken, companyVisitController.applyForCompanyVisit);
+
+// GET /api/company-visits/applications - Get all company applications for admin/superadmin
+router.get('/applications', verifyToken, isAdmin, companyVisitController.getCompanyApplications);
+
 // PUT /api/company-visits/:id - Update company visit (admin only)
 router.put('/:id', verifyToken, isAdmin, companyVisitController.updateCompanyVisit);
 

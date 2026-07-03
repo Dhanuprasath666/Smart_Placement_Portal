@@ -142,6 +142,11 @@ function CompanyVisitDetail() {
                 </span>
               ))}
             </div>
+            <Link to={`/company-visit/${companyVisit._id}/apply`} className="inline-block mt-6">
+              <button className="px-6 py-3 bg-white text-blue-700 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition">
+                I'm Interested to Apply
+              </button>
+            </Link>
           </div>
         </div>
 

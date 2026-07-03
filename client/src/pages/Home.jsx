@@ -6,256 +6,114 @@ function Home() {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-linear-to-br from-blue-600 via-purple-600 to-pink-500 opacity-90"></div>
+    <div className="min-h-screen bg-gradient-to-br from-sky-200 via-indigo-100 to-emerald-100 text-slate-900">
+      <header className="border-b border-blue-200 bg-blue-100/90 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+          <div>
+            <h1 className="text-lg font-semibold tracking-tight">Placement Portal</h1>
+            <p className="text-sm text-slate-500">Student and admin dashboard</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link to="/placements" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+              Placements
+            </Link>
+            <Link to="/company-visits" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+              Company Visits
+            </Link>
+            {!user ? (
+              <Link to="/login" className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Login
+              </Link>
+            ) : (
+              <Link
+                to={user.role === "admin" ? "/admin" : user.role === "superadmin" ? "/superadmin/admins" : "/dashboard"}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Dashboard
+              </Link>
+            )}
+          </div>
+        </div>
+      </header>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
-              Welcome to
-              <span className="block mt-2 bg-clip-text text-transparent bg-linear-to-r from-yellow-300 to-pink-300">
+      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+        <section className="rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-100 via-white to-emerald-100 p-8 shadow-sm backdrop-blur lg:p-12">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div>
+              <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
                 Placement Portal
               </span>
-            </h1>
 
-            <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto">
-              Share your placement success stories and inspire your juniors 🚀
-            </p>
+              <h2 className="mt-6 max-w-2xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                A simple place for placements, company visits, and student applications.
+              </h2>
 
-            {!user ? (
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link to="/login">
-                  <button className="w-64 bg-white text-blue-600 font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
-                    Login
-                  </button>
-                </Link>
+              <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+                Students get alerts and one-click apply. Admins can view applications by company without re-entering student details.
+              </p>
 
-                <Link to="/register">
-                  <button className="w-64 bg-linear-to-r from-green-500 to-emerald-600 text-white font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
-                    Register Now
-                  </button>
-                </Link>
-
-                <Link to="/admin-register">
-                  <button className="w-64 bg-linear-to-r from-red-500 to-orange-600 text-white font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
-                    🔐 Admin Sign Up
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <p className="text-2xl text-white font-semibold mb-6">
-                  Welcome back, {user.name}! 👋
-                </p>
-                <Link to={user.role === "admin" ? "/admin" : "/dashboard"}>
-                  <button className="w-64 bg-white text-blue-600 font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
+              <div className="mt-8 flex flex-wrap gap-3">
+                {!user ? (
+                  <>
+                    <Link to="/register" className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">
+                      Register
+                    </Link>
+                    <Link to="/admin-register" className="rounded-lg border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-50">
+                      Admin Sign Up
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    to={user.role === "admin" ? "/admin" : user.role === "superadmin" ? "/superadmin/admins" : "/dashboard"}
+                    className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                  >
                     Go to Dashboard
-                  </button>
-                </Link>
+                  </Link>
+                )}
               </div>
-            )}
+            </div>
 
-            <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center ">
-              <Link to="/placements">
-                <button className="bg-linear-to-r from-orange-500 to-red-500 text-white font-bold py-4 px-10 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
-                  🎯 View All Placements
-                </button>
-              </Link>
-              <Link to="/company-visits">
-                <button className="bg-linear-to-r from-cyan-500 to-blue-500 text-white font-bold py-4 px-10 rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition duration-300">
-                  🏢 Company Visits
-                </button>
-              </Link>
+            <div className="rounded-2xl border border-blue-200 bg-sky-100 p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Quick overview</h3>
+              <div className="mt-5 space-y-4">
+                <div className="rounded-xl bg-white/80 p-4 border border-blue-200">
+                  <p className="text-sm text-slate-500">Students</p>
+                  <p className="mt-1 text-lg font-semibold">Profile sync and apply flow</p>
+                </div>
+                <div className="rounded-xl bg-white/80 p-4 border border-blue-200">
+                  <p className="text-sm text-slate-500">Admins</p>
+                  <p className="mt-1 text-lg font-semibold">Company-wise applications</p>
+                </div>
+                <div className="rounded-xl bg-white/80 p-4 border border-blue-200">
+                  <p className="text-sm text-slate-500">Super admins</p>
+                  <p className="mt-1 text-lg font-semibold">User and company control</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Features Section */}
-      <div className="bg-linear-to-br from-slate-800 to-slate-900 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-4 text-white">
-            Why Use Our Platform?
-          </h2>
-          <p className="text-center text-gray-300 mb-16 text-lg">
-            Everything you need for placement success in one place
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-linear-to-br from-blue-600 to-blue-700 p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition duration-300 transform hover:-translate-y-2 border border-blue-500">
-              <div className="text-5xl mb-4">📊</div>
-              <h3 className="text-2xl font-bold mb-3 text-white">
-                Track Success
-              </h3>
-              <p className="text-blue-100">
-                View verified placement records with package details and company
-                information
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border border-blue-200 bg-sky-100 p-5">
+              <h4 className="font-semibold text-slate-900">Verified placements</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                See approved placement records with package and company details.
               </p>
             </div>
-
-            <div className="bg-linear-to-br from-purple-600 to-purple-700 p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition duration-300 transform hover:-translate-y-2 border border-purple-500">
-              <div className="text-5xl mb-4">💡</div>
-              <h3 className="text-2xl font-bold mb-3 text-white">
-                Learn & Prepare
-              </h3>
-              <p className="text-purple-100">
-                Read interview experiences and tips from students who got placed
+            <div className="rounded-2xl border border-indigo-200 bg-indigo-100 p-5">
+              <h4 className="font-semibold text-slate-900">Company visits</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Check eligibility, notifications, and application status in one place.
               </p>
             </div>
-
-            <div className="bg-linear-to-br from-pink-600 to-pink-700 p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition duration-300 transform hover:-translate-y-2 border border-pink-500">
-              <div className="text-5xl mb-4">🎓</div>
-              <h3 className="text-2xl font-bold mb-3 text-white">
-                Share Your Story
-              </h3>
-              <p className="text-pink-100">
-                Help juniors by sharing your placement journey and success story
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-100 p-5">
+              <h4 className="font-semibold text-slate-900">One-click apply</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Eligible students can apply using stored profile data.
               </p>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="bg-linear-to-br from-slate-700 to-slate-800 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-4 text-white">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-center text-gray-300 mb-16 text-lg">
-            Got questions? We've got answers!
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Left Column */}
-            <div className="space-y-4">
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-blue-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  How do I submit my placement details?
-                  <span className="text-3xl text-blue-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Register/Login as a student, go to your dashboard, click
-                  "Submit New Placement", fill in your details including company
-                  name, package, and upload your offer letter and ID card.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-purple-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  How long does admin approval take?
-                  <span className="text-3xl text-purple-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Admins typically review and approve placements within 24-48
-                  hours. You'll be able to see the status in your dashboard.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-green-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  Can I submit my placement anonymously?
-                  <span className="text-3xl text-green-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! When submitting your placement, there's a checkbox option
-                  to "Submit anonymously". Your name will be hidden on the
-                  public page.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-orange-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  What documents do I need to upload?
-                  <span className="text-3xl text-orange-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  You need: (1) Offer letter (PDF/image, max 5MB), and (2)
-                  College ID card (image, max 5MB) for verification.
-                </p>
-              </details>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-4">
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-pink-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  What is the Company Visits section?
-                  <span className="text-3xl text-pink-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Shows companies recruiting from our college with roles,
-                  package ranges, eligibility criteria, and job descriptions to
-                  help you prepare.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-indigo-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  How do I become an admin?
-                  <span className="text-3xl text-indigo-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Admin accounts require a secret code provided to authorized
-                  placement coordinators. Contact the main administrator for
-                  access.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-red-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  Can I edit my placement after submission?
-                  <span className="text-3xl text-red-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Currently not supported. If you made a mistake, contact an
-                  admin or delete and resubmit with correct information.
-                </p>
-              </details>
-
-              <details className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border-l-4 border-teal-500">
-                <summary className="flex justify-between items-center cursor-pointer font-semibold text-lg text-gray-800">
-                  Is my personal information secure?
-                  <span className="text-3xl text-teal-600 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! All data is securely stored. Only admins see it for
-                  verification. You can choose to display or hide your name
-                  publicly.
-                </p>
-              </details>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="bg-gray-900 text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            Made with ❤️ for students | Placement Portal 2025
-          </p>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }
