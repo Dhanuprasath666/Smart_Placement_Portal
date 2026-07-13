@@ -204,7 +204,11 @@ When a student applies, their current profile data (CGPA, branch, skills, etc.) 
 
 ## 📸 Screenshots
 
-> *(Add screenshots here)*
+> <img width="1917" height="1081" alt="image" src="https://github.com/user-attachments/assets/a1444fdf-5471-4335-9d1b-ce6b6ef2abfe" />
+><img width="1917" height="1072" alt="image" src="https://github.com/user-attachments/assets/bdc0982b-1f03-451e-a09d-d0ce93e8640f" />
+><img width="1900" height="1026" alt="image" src="https://github.com/user-attachments/assets/11d0f701-b863-4777-9cee-e087dbf86522" />
+><img width="1912" height="1081" alt="image" src="https://github.com/user-attachments/assets/f66cb982-7289-45e7-9a20-66cd52b56ac7" />
+
 
 ---
 
