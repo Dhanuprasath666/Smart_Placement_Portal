@@ -3,14 +3,6 @@
 A full-stack college placement management system where admins post company opportunities, eligible students get auto-notified based on their CGPA and branch, and students can apply with one click — no Google Forms needed.
 
 ---
-
-## 🚀 Live Demo
-
-- **Frontend:** [placement-portal-bk43.vercel.app](https://placement-portal-bk43.onrender.com)
-- **Backend API:** [placement-portal-api.onrender.com](https://placement-portal-bk43.onrender.com)
-
----
-
 ## 💡 Why I Built This
 
 During my third year, placement company details were shared informally — group chats, emails, word of mouth. Many students missed opportunities simply because the information didn't reach them in time. There was no single reliable place every student could check.
