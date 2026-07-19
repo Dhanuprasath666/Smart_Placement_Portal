@@ -14,8 +14,12 @@
     "axios": "^1.13.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+<<<<<<< HEAD
     "react-router-dom": "^7.13.0",
     "socket.io-client": "^4.8.3"
+=======
+    "react-router-dom": "^7.13.0"
+>>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

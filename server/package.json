@@ -22,7 +22,11 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.22.1",
     "multer": "^2.0.2",
+<<<<<<< HEAD
     "nodemon": "^3.1.11",
     "socket.io": "^4.8.3"
+=======
+    "nodemon": "^3.1.11"
+>>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
   }
 }

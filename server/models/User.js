@@ -102,6 +102,7 @@ const userSchema = new mongoose.Schema(
         type: Date,
         default: Date.now,
       },
+<<<<<<< HEAD
     }],
     // Verified Alumni Referral & Mentorship Network
     isMentor: {
@@ -116,6 +117,9 @@ const userSchema = new mongoose.Schema(
       willingToRefer: { type: Boolean, default: false },
       shortBio: { type: String, default: '' },
     },
+=======
+    }]
+>>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
   },
   {
     timestamps: true,

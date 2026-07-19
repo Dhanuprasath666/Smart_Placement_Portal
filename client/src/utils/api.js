@@ -162,6 +162,7 @@ export const deleteUser = async (userId) => {
   const response = await axios.delete(`${API_URL}/superadmin/users/${userId}`);
   return response.data;
 };
+<<<<<<< HEAD
 
 // Mentor APIs (Verified Alumni Referral & Mentorship Network)
 export const getAllMentors = async (filters = {}) => {
@@ -218,3 +219,5 @@ export const sendChatMessage = async (id, text) => {
   const response = await axios.post(`${API_URL}/mentors/requests/${id}/messages`, { text });
   return response.data;
 };
+=======
+>>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
