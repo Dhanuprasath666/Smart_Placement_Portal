@@ -32,7 +32,8 @@ function MentorChat() {
       setLoading(true);
       setError('');
       try {
-        const data = await getMentorRequestById(requestId);
+        const data = await get
+        ById(requestId);
         setMentorRequest(data.mentorRequest);
         if (data.mentorRequest.status === 'accepted') {
           await loadMessages();

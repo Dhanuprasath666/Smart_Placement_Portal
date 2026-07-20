@@ -17,8 +17,18 @@ export const socket = io(SOCKET_URL, {
 export const connectSocket = (token) => {
   socket.auth = { token };
   if (!socket.connected) {
-    socket.connect();
-  }
+    socket.connect();//he Socket.IO library does it automatically.Frontend
+
+// socket.connect()
+
+//         │
+//         ▼
+// Socket.IO Library
+//         │
+//         ▼
+// Server
+//  
+ }
 };
 
 export const disconnectSocket = () => {

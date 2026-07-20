@@ -18,11 +18,8 @@ const mapUserResponse = (user) => ({
   skills: user.skills || '',
   bio: user.bio || '',
   notifications: user.notifications || [],
-<<<<<<< HEAD
   isMentor: user.isMentor || false,
   mentorProfile: user.mentorProfile || null,
-=======
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
   role: user.role,
   isBlocked: user.isBlocked
 });

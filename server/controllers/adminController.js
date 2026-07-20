@@ -32,7 +32,7 @@ exports.approvePlacement = async (req, res) => {
     placement.verifiedBy = adminId;
     await placement.save();
 
-<<<<<<< HEAD
+
     // Verified Alumni Referral & Mentorship Network:
     // automatically make the approved student a verified mentor
     await User.findByIdAndUpdate(placement.userId, {
@@ -42,8 +42,7 @@ exports.approvePlacement = async (req, res) => {
       'mentorProfile.graduationYear': new Date().getFullYear().toString(),
     });
 
-=======
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
+
     res.json({ 
       message: 'Placement approved successfully',
       placement 

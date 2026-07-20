@@ -4,11 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 
 function Sidebar() {
   const location = useLocation();
-<<<<<<< HEAD
   const { user, logout } = useContext(AuthContext);
-=======
-  const { logout } = useContext(AuthContext);
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
 
   const isActive = (path) => location.pathname === path;
 
@@ -20,7 +16,6 @@ function Sidebar() {
     { path: '/dashboard/profile', icon: '👤', label: 'My Profile' },
     { path: '/placements', icon: '🎯', label: 'Explore Placements' },
     { path: '/company-visits', icon: '🏢', label: 'Companies' },
-<<<<<<< HEAD
     { path: '/mentors', icon: '🎓', label: 'Find Mentors' },
     { path: '/dashboard/mentor-requests', icon: '📨', label: 'My Requests' },
     ...(user?.isMentor
@@ -29,8 +24,6 @@ function Sidebar() {
           { path: '/dashboard/mentor-settings', icon: '⚙️', label: 'Mentor Settings' },
         ]
       : []),
-=======
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
   ];
 
   return (

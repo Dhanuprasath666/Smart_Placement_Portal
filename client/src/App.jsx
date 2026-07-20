@@ -19,15 +19,12 @@ import SuperAdminUsers from './pages/SuperAdminUser';
 import SuperAdminRegister from './pages/SuperAdminRegister';
 import Notifications from './pages/Notifications';
 import CompanyVisitApply from './pages/CompanyVisitApply';
-<<<<<<< HEAD
 import MentorDirectory from './pages/MentorDirectory';
 import MentorProfile from './pages/MentorProfile';
 import MyMentorRequests from './pages/MyMentorRequests';
 import IncomingRequests from './pages/IncomingRequests';
 import MentorSettings from './pages/MentorSettings';
 import MentorChat from './pages/MentorChat';
-=======
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
 
 function App() {
   return (
@@ -132,7 +129,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-<<<<<<< HEAD
 
           {/* Verified Alumni Referral & Mentorship Network */}
           <Route path="/mentors" element={<MentorDirectory />} />
@@ -169,8 +165,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-=======
->>>>>>> aea32e7ed93e3d02d9c09e812436b328a5716a43
         </Routes>
       </Router>
     </AuthProvider>
